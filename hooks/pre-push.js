@@ -9,16 +9,19 @@ if (params.length === 2) {
             return value.replace('.git', '')
         })
     
-    exec('git checkout develop && git status && git pull origin develop', (error, stdout, stderr) => {
-        if (error) {
-            console.log(`Um erro ocorreu. ${error}`)
-            return ;
-        } else if (stderr) {
-            console.log(`Stderr. ${stderr}`)
-            return ;
-        }
-        console.log(stdout)
-    })
+    try {
+        exec('git checkout develop && git status && git pull origin develop', (error, stdout, stderr) => {
+            if (error) {
+                throw new Error(error)
+            } else if (stderr) {
+                throw new Error(stderr)
+            }
+            console.log(stdout)
+        })
+    } catch (e) {
+        console.log(`Um erro ocorreu. ${e.message}`)
+        exec(`git checkout ${currentBranch}`)
+    }
 } else {
     console.log('Branch origem e/ou destino não informados!')
 }
