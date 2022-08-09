@@ -4,5 +4,8 @@
   },
   "scripts": {
     "prepare": "husky install"
+  },
+  "husky": {
+    "pre-push": "node ./hooks/pre-push.js"
   }
 }
